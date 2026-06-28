@@ -2677,6 +2677,10 @@ nav {
   color: var(--red-600);
 }
 
+.application-field-note {
+  color: var(--gray-700) !important;
+}
+
 .application-form-actions {
   display: flex;
   align-items: center;

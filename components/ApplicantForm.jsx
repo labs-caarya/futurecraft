@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
-import { submitFutureCraftApplicant } from "../lib/applicants";
+import { listFutureCraftColleges, submitFutureCraftApplicant } from "../lib/applicants";
 
 const EMPTY_FORM = {
   name: "",
@@ -10,7 +10,6 @@ const EMPTY_FORM = {
 };
 
 const YEAR_OPTIONS = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
-const COLLEGE_OPTIONS = ["GITAM Vishakhapatnam", "KJ Somaiyya", "Symbiosis Pune"];
 const OTHER_COLLEGE_OPTION = "__other__";
 
 function validate(values) {
@@ -40,6 +39,8 @@ export default function ApplicantForm({
 }) {
   const [values, setValues] = useState(EMPTY_FORM);
   const [collegeSelection, setCollegeSelection] = useState("");
+  const [collegeOptions, setCollegeOptions] = useState([]);
+  const [collegeLoadStatus, setCollegeLoadStatus] = useState("loading");
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
@@ -47,6 +48,31 @@ export default function ApplicantForm({
   const isSubmitting = status === "submitting";
   const isSuccess = status === "success";
   const isOtherCollegeSelected = collegeSelection === OTHER_COLLEGE_OPTION;
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadColleges() {
+      setCollegeLoadStatus("loading");
+
+      try {
+        const nextCollegeOptions = await listFutureCraftColleges();
+        if (!isActive) return;
+        setCollegeOptions(nextCollegeOptions);
+        setCollegeLoadStatus("ready");
+      } catch {
+        if (!isActive) return;
+        setCollegeOptions([]);
+        setCollegeLoadStatus("error");
+      }
+    }
+
+    loadColleges();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   function updateField(key, nextValue) {
     setValues((current) => ({ ...current, [key]: nextValue }));
@@ -159,7 +185,7 @@ export default function ApplicantForm({
             <option value="" disabled hidden>
               Select your college
             </option>
-            {COLLEGE_OPTIONS.map((college) => (
+            {collegeOptions.map((college) => (
               <option key={college} value={college}>
                 {college}
               </option>
@@ -168,6 +194,11 @@ export default function ApplicantForm({
           </select>
           {errors.college && !isOtherCollegeSelected ? (
             <small>{errors.college}</small>
+          ) : null}
+          {!errors.college && collegeLoadStatus === "error" ? (
+            <small className="application-field-note">
+              Could not load colleges right now. Choose Other college to type yours.
+            </small>
           ) : null}
         </label>
 
