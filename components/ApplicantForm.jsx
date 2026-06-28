@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Button from "./Button";
 import { submitFutureCraftApplicant } from "../lib/applicants";
 
@@ -9,18 +9,22 @@ const EMPTY_FORM = {
   year: "",
 };
 
+const YEAR_OPTIONS = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+const COLLEGE_OPTIONS = ["GITAM Vishakhapatnam", "KJ Somaiyya", "Symbiosis Pune"];
+const OTHER_COLLEGE_OPTION = "__other__";
+
 function validate(values) {
   const nextErrors = {};
   const email = String(values.email || "").trim();
 
-  if (!String(values.name || "").trim()) nextErrors.name = "Name is required.";
+  if (!String(values.name || "").trim()) nextErrors.name = "* Name is required.";
   if (!email) {
-    nextErrors.email = "Email id is required.";
+    nextErrors.email = "* Email id is required.";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     nextErrors.email = "Enter a valid email id.";
   }
-  if (!String(values.college || "").trim()) nextErrors.college = "College is required.";
-  if (!String(values.year || "").trim()) nextErrors.year = "Year is required.";
+  if (!String(values.college || "").trim()) nextErrors.college = "* College is required.";
+  if (!String(values.year || "").trim()) nextErrors.year = "* Year is required.";
 
   return nextErrors;
 }
@@ -35,22 +39,14 @@ export default function ApplicantForm({
   titleId,
 }) {
   const [values, setValues] = useState(EMPTY_FORM);
+  const [collegeSelection, setCollegeSelection] = useState("");
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
 
   const isSubmitting = status === "submitting";
   const isSuccess = status === "success";
-
-  const fieldConfig = useMemo(
-    () => [
-      { key: "name", label: "Name", type: "text", autoComplete: "name" },
-      { key: "email", label: "Email id", type: "email", autoComplete: "email" },
-      { key: "college", label: "College", type: "text", autoComplete: "organization" },
-      { key: "year", label: "Year", type: "text", autoComplete: "off" },
-    ],
-    [],
-  );
+  const isOtherCollegeSelected = collegeSelection === OTHER_COLLEGE_OPTION;
 
   function updateField(key, nextValue) {
     setValues((current) => ({ ...current, [key]: nextValue }));
@@ -61,6 +57,17 @@ export default function ApplicantForm({
       return nextErrors;
     });
     if (message) setMessage("");
+  }
+
+  function handleCollegeChange(nextValue) {
+    setCollegeSelection(nextValue);
+
+    if (nextValue === OTHER_COLLEGE_OPTION) {
+      updateField("college", "");
+      return;
+    }
+
+    updateField("college", nextValue);
   }
 
   async function handleSubmit(event) {
@@ -117,19 +124,87 @@ export default function ApplicantForm({
       </div>
 
       <div className="application-form-grid">
-        {fieldConfig.map((field) => (
-          <label key={field.key} className="application-field">
-            <span>{field.label}</span>
+        <label className="application-field">
+          <span>Name</span>
+          <input
+            type="text"
+            value={values.name}
+            autoComplete="name"
+            onChange={(event) => updateField("name", event.target.value)}
+            aria-invalid={errors.name ? "true" : "false"}
+          />
+          {errors.name ? <small>{errors.name}</small> : null}
+        </label>
+
+        <label className="application-field">
+          <span>Email id</span>
+          <input
+            type="email"
+            value={values.email}
+            autoComplete="email"
+            onChange={(event) => updateField("email", event.target.value)}
+            aria-invalid={errors.email ? "true" : "false"}
+          />
+          {errors.email ? <small>{errors.email}</small> : null}
+        </label>
+
+        <label className="application-field">
+          <span>College</span>
+          <select
+            value={collegeSelection}
+            autoComplete="organization"
+            onChange={(event) => handleCollegeChange(event.target.value)}
+            aria-invalid={errors.college ? "true" : "false"}
+          >
+            <option value="" disabled hidden>
+              Select your college
+            </option>
+            {COLLEGE_OPTIONS.map((college) => (
+              <option key={college} value={college}>
+                {college}
+              </option>
+            ))}
+            <option value={OTHER_COLLEGE_OPTION}>Other college</option>
+          </select>
+          {errors.college && !isOtherCollegeSelected ? (
+            <small>{errors.college}</small>
+          ) : null}
+        </label>
+
+        <label className="application-field">
+          <span>Year</span>
+          <select
+            value={values.year}
+            autoComplete="off"
+            onChange={(event) => updateField("year", event.target.value)}
+            aria-invalid={errors.year ? "true" : "false"}
+          >
+            <option value="" disabled hidden>
+              Select your year
+            </option>
+            {YEAR_OPTIONS.map((yearOption) => (
+              <option key={yearOption} value={yearOption}>
+                {yearOption}
+              </option>
+            ))}
+          </select>
+          {errors.year ? <small>{errors.year}</small> : null}
+        </label>
+
+        {isOtherCollegeSelected ? (
+          <label className="application-field application-field-full">
+            <span>College name</span>
             <input
-              type={field.type}
-              value={values[field.key]}
-              autoComplete={field.autoComplete}
-              onChange={(event) => updateField(field.key, event.target.value)}
-              aria-invalid={errors[field.key] ? "true" : "false"}
+              type="text"
+              value={values.college}
+              autoComplete="organization"
+              onChange={(event) => updateField("college", event.target.value)}
+              aria-invalid={errors.college ? "true" : "false"}
+              placeholder="Type your college name"
             />
-            {errors[field.key] ? <small>{errors[field.key]}</small> : null}
+            {errors.college ? <small>{errors.college}</small> : null}
           </label>
-        ))}
+        ) : null}
       </div>
 
       {message && status === "error" ? <div className="application-message error">{message}</div> : null}
