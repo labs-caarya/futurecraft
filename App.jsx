@@ -148,7 +148,7 @@ export default function App() {
                 key={modalInstance}
                 compact
                 title="Tell us where you are starting from."
-                description="Share a few details and we’ll help you find the right Future Crafts path."
+                description="Share a few details and we’ll help you find the right Future Craft path."
                 submitLabel="Get Started"
               />
             </div>
@@ -172,7 +172,7 @@ export default function App() {
                 <div className="hero-badge">12-week build program for students • free</div>
                 <h1 className="hero-h1">Build proof before you need experience.</h1>
                 <p className="hero-body">
-                  College gives you marks. Companies ask for experience. Future Crafts helps
+                  College gives you marks. Companies ask for experience. Future Craft helps
                   students turn real projects into portfolio proof, career clarity, and visible
                   work experience in 12 weeks.
                 </p>
@@ -192,7 +192,7 @@ export default function App() {
                 </div>
               </div>
 
-              <aside className="hero-proof-panel" aria-label="Future Crafts overview">
+              <aside className="hero-proof-panel" aria-label="Future Craft overview">
                 <div className="hero-proof-content">
                   <div className="hero-proof-copy">
                     <div className="hero-proof-label">What you get</div>
@@ -408,7 +408,7 @@ export default function App() {
               compact
               titleId="application-modal-title"
               title="Tell us where you are starting from."
-              description="Share a few details and we’ll help you find the right Future Crafts path."
+              description="Share a few details and we’ll help you find the right Future Craft path."
               submitLabel="Get Started"
             />
           </div>

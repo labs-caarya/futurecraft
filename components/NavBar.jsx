@@ -5,9 +5,9 @@ export default function NavBar({ onHome, onSection, onApply }) {
   return (
     <nav>
       <div className="nav-inner">
-        <button className="logo" onClick={onHome} aria-label="Go to Future Crafts home">
+        <button className="logo" onClick={onHome} aria-label="Go to Future Craft home">
           <BrandMark />
-          <span className="logo-text">caarya / future crafts</span>
+          <span className="logo-text">caarya / future craft</span>
         </button>
         <div className="nav-right">
           <button className="nav-link" onClick={() => onSection("why")}>

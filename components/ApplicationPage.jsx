@@ -9,13 +9,13 @@ export default function ApplicationPage({ onHome }) {
           <div className="application-page-copy">
             <SectionTag>Get Started</SectionTag>
             <h1 className="sub-h1">
-              Future Crafts
+              futurecraft{" "}
               <br />
               starts here.
             </h1>
             <p className="sub-intro">
               Share your details and we&apos;ll help you find the right build path inside Future
-              Crafts.
+              Craft.
             </p>
             <div className="application-page-points">
               <div>12 weeks</div>

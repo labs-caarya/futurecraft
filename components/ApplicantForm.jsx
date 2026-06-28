@@ -131,7 +131,7 @@ export default function ApplicantForm({
         <div className="application-success-kicker">Application received</div>
         <h2>{message}</h2>
         <p>
-          Your interest in Future Crafts is in. We&apos;ll review your details and reach out on
+          Your interest in Future Craft is in. We&apos;ll review your details and reach out on
           the email id you shared.
         </p>
         {successActionLabel && onSuccessAction ? (
@@ -144,7 +144,7 @@ export default function ApplicantForm({
   return (
     <form className={`application-form ${compact ? "application-form-compact" : ""}`} onSubmit={handleSubmit}>
       <div className="application-form-head">
-        <div className="application-form-kicker">Future Crafts application</div>
+        <div className="application-form-kicker">Future Craft application</div>
         <h1 id={titleId}>{title}</h1>
         {description ? <p>{description}</p> : null}
       </div>

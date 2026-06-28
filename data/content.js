@@ -1,6 +1,6 @@
 export const homeSections = {
   hero: {
-    badge: ["Future Crafts", "12 Weeks", "Free"],
+    badge: ["Future Craft", "12 Weeks", "Free"],
     title: ["Build your", "human advantage."],
     body:
       "AI can help you execute faster. But your career will depend on something AI cannot replace: your judgment, your empathy, your ability to lead people through uncertainty.",
@@ -35,10 +35,10 @@ export const homeSections = {
         "What trade-off is worth making",
       ],
       footer:
-        "That is where human capability matters. That is the gap Future Crafts closes.",
+        "That is where human capability matters. That is the gap Future Craft closes.",
     },
     quote: {
-      text: '"Before Future Crafts I had a resume. After it, I had proof."',
+      text: '"Before Future Craft I had a resume. After it, I had proof."',
       attribution: "Priya, 3rd year, BITS Pilani",
     },
   },
@@ -77,7 +77,7 @@ export const homeSections = {
   cost: {
     tag: "What It Costs",
     amount: "₹0.",
-    title: "Future Crafts is completely free for every student.",
+    title: "Future Craft is completely free for every student.",
     body: "No fees. No subscription. Nothing hidden. You bring your time and ownership. We bring real work, mentorship, and proof systems.",
   },
   paths: {
